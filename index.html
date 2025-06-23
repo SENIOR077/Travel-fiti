@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAVELFITY - East Africa Bus Travel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Page Transition */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.3rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Hero Sections */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 10rem 0 5rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .page-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                       url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 8rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            margin: 1rem auto;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--gray);
+            border-radius: 0.3rem;
+            font-family: inherit;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h3 {
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transition: left 0.3s;
+            }
+        
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .hero, .page-hero {
+                padding: 6rem 0 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo" data-page="home">TRAVELFITY</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#" class="active" data-page="home">Home</a>
+                <a href="#" data-page="destinations">Destinations</a>
+                <a href="#" data-page="services">Services</a>
+                <a href="#" data-page="about">About</a>
+                <a href="#" data-page="contact">Contact</a>
+                <a href="#" class="btn btn-primary" data-page="login">Login</a>
+            </div>
+            <button class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div class="page active" id="home-page">
+        <section class="hero">
+            <div class="container">
+                <h1>Explore East Africa</h1>
+                <p>Book comfortable, affordable bus trips across Kenya, Tanzania, Uganda, Rwanda and more</p>
+                <a href="#" class="btn btn-primary" data-page="destinations">View Destinations</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Popular Routes</h2>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Nairobi">
+                        <div class="card-content">
+                            <h3>Nairobi to Mombasa</h3>
+                            <p>From $20 | 8hr journey</p>
+                            <a href="#" class="btn btn-primary" data-page="booking">Book Now</a>
+                        </div>
+                    </div>
+                    <!-- More route cards -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Destinations Page -->
+    <div class="page" id="destinations-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1>Our Destinations</h1>
+                <p>Explore East Africa's most popular cities</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid grid-4">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Nairobi">
+                        <div class="card-content">
+                            <h3>Nairobi, Kenya</h3>
+                            <p>The vibrant capital city of Kenya</p>
+                        </div>
+                    </div>
+                    <!-- More destination cards -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Services Page -->
+    <div class="page" id="services-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1>Our Services</h1>
+                <p>Everything you need for a comfortable journey</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-content">
+                            <i class="fas fa-bus" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                            <h3>Bus Booking</h3>
+                            <p>Book tickets for hundreds of routes across East Africa</p>
+                        </div>
+                    </div>
+                    <!-- More service cards -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div class="page" id="about-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1>About Us</h1>
+                <p>Your trusted travel partner in East Africa</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <h2>Our Story</h2>
+                    <p>Founded in 2020, TRAVELFITY began with a mission to make bus travel across East Africa more accessible and reliable. Today, we serve thousands of travelers every month.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div class="page" id="contact-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1>Contact Us</h1>
+                <p>We'd love to hear from you</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 3rem;">
+                    <div>
+                        <h2>Get in Touch</h2>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Travel Street, Nairobi</p>
+                        <p><i class="fas fa-phone"></i> +254 700 123456</p>
+                        <p><i class="fas fa-envelope"></i> info@travelfity.com</p>
+                    </div>
+                    <div>
+                        <h2>Send a Message</h2>
+                        <form>
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email">
+                            </div>
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea rows="5"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Page -->
+    <div class="page" id="login-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1>Login</h1>
+                <p>Access your TRAVELFITY account</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div style="max-width: 500px; margin: 0 auto; background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <form>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                        <p style="text-align: center; margin-top: 1rem;">Don't have an account? <a href="#" data-page="register">Register</a></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h3>TRAVELFITY</h3>
+                    <p>Your trusted partner for bus travel across East Africa</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <a href="#" data-page="home">Home</a>
+                    <a href="#" data-page="destinations">Destinations</a>
+                    <a href="#" data-page="services">Services</a>
+                </div>
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <a href="#" data-page="about">About Us</a>
+                    <a href="#" data-page="contact">Contact</a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 TRAVELFITY. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            const pages = document.querySelectorAll('.page');
+            const navItems = document.querySelectorAll('.nav-links a');
+
+            // Mobile menu toggle
+            hamburger.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Page navigation
+            function showPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(pageId).classList.add('active');
+
+                // Update active nav item
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.page === pageId.split('-')[0]) {
+                        item.classList.add('active');
+                    }
+                });
+
+                // Close mobile menu
+                navLinks.classList.remove('active');
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }
+
+            // Handle all navigation clicks
+            document.querySelectorAll('[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.dataset.page;
+                    showPage(page + '-page');
+                });
+            });
+
+            // Initialize with home page
+            showPage('home-page');
+        });
+    </script>
+</body>
+</html>
